@@ -1,109 +1,171 @@
-# 🌟 Week 2 – BabySoC Functional Modelling & Simulation 🚀
+# 🌟 Week 2 – BabySoC Fundamentals & Functional Modelling 🚀
 
-## 🎯 Objective
+## 📘 Part 1 – Theory: SoC Fundamentals
 
-Gain hands-on experience in **SoC fundamentals** by performing **functional modelling** of the BabySoC using:
+### 🤔 What is a System-on-Chip (SoC)?
 
-* 🖥️ **Icarus Verilog** – Compile RTL modules
-* 📊 **GTKWave** – Analyze simulation waveforms
-* 🧪 **Testbench** – Verify functional behavior
+A **System-on-Chip (SoC)** is a **mini-computer on a single chip**, integrating CPU, memory, peripherals, and interconnects.
+
+💡 **Benefits of SoCs:**
+
+* 🔹 Smaller size → fits in smartphones, IoT devices
+* 🔹 Lower power consumption → energy-efficient
+* 🔹 Faster communication → components directly connected
+
+Typical components:
+
+* 💻 **CPU** – executes instructions and controls operations
+* 🧠 **Memory** – RAM for temporary, ROM/Flash for permanent storage
+* 📡 **Peripherals** – UART, SPI, GPIO, timers
+* 🔗 **Interconnect** – buses or network connecting CPU, memory, and peripherals
 
 ---
 
-## 🛠️ Step-by-Step Procedure 🔹
+### 🍼 Why BabySoC Exists
+
+* Simplified **learning model** of SoC
+* Helps observe **CPU operation, memory access, and peripheral interaction**
+* Focuses on **signal flow and module communication**
+* Easy to **simulate and debug** before hardware implementation
+
+---
+
+### ⚙️ Functional Modelling: What & Why
+
+Functional modelling simulates the SoC at a **high abstraction level** to verify behavior before building hardware.
+
+🔹 **Purposes:**
+
+* ✅ Verify functionality (CPU & DAC output correctness)
+* 🛑 Catch errors early (save time and cost)
+* 🔄 Faster iterations (modify logic easily)
+
+**Tools:**
+
+* 🖥️ **Icarus Verilog (iverilog)** – Compile and simulate RTL
+* 📊 **GTKWave** – View waveforms for analysis
+
+---
+
+### 🧩 How BabySoC Works
+
+* **CPU (`rvmyth`)** → executes instructions, generates digital output
+* **PLL (`avsdpll`)** → provides a stable clock
+* **DAC (`avsddac`)** → converts digital output to analog
+
+```
+[CPU (rvmyth)] --> digital output --> [DAC (avsddac)] --> analog OUT
+         ^
+         |
+       clock (from PLL)
+```
+
+* **Testbench** initializes signals & clocks, dumps `.vcd` waveforms
+* Observe **reset**, **clock**, and **dataflow** signals
+
+---
+
+### 🎯 Key Learning Outcomes
+
+* Explain **SoC architecture** and module roles
+* Understand **functional modelling** importance
+* Ready for hands-on **simulation & waveform analysis**
+
+✅ **Analogy:** BabySoC = mini music player
+
+* CPU → Composer deciding the notes
+* PLL → Metronome keeping timing correct
+* DAC → Speaker converting digital notes to sound
+
+---
+
+## 🌟 Part 2 – Hands-on Functional Modelling
+
+### 🎯 Objective
+
+Gain practical experience simulating BabySoC using:
+
+* 🖥️ **Icarus Verilog** → compile RTL modules
+* 📊 **GTKWave** → view and analyze waveforms
+* 🧪 **Testbench** → verify functional behavior
+
+---
+
+### 🛠️ Step-by-Step Procedure
 
 <details>
 <summary>📂 Click to expand steps</summary>
 
-1. **📥 Clone the Project**
+1️⃣ **Setup Project Directory**
 
-   ```bash
-   git clone https://github.com/manili/VSDBabySoC.git
-   cd VSDBabySoC/src/module
-   ```
+```bash
+cd ~/New/
+git clone https://github.com/hemanthkumardm/SFAL-VSD-SoC-Journey.git
+cd "SFAL-VSD-SoC-Journey/12. VSDBabySoC Project"
+mkdir -p output/pre_synth_sim output/post_synth_sim
+```
 
-2. **⚡ Compile RTL & Testbench**
+2️⃣ **Pre-Synthesis Compilation & Simulation**
 
-   ```bash
-   iverilog -o output/pre_synth_sim/rvmyth.out rvmyth.v testbench.v
-   ```
+```bash
+iverilog -o output/pre_synth_sim/pre_synth_sim.out -DPRE_SYNTH_SIM \
+    -I src/include -I src/module \
+    src/module/testbench.v src/module/vsdbabysoc.v
+cd output/pre_synth_sim
+./pre_synth_sim.out
+gtkwave pre_synth_sim.vcd
+```
 
-3. **▶️ Run Simulation**
+3️⃣ **Post-Synthesis Compilation & Simulation**
 
-   ```bash
-   ./output/pre_synth_sim/rvmyth.out
-   ```
+```bash
+iverilog -o output/post_synth_sim/post_synth_sim.out -DPOST_SYNTH_SIM \
+    -I src/include -I src/module \
+    src/module/testbench.v output/synthesized/vsdbabysoc.synth.v
+cd output/post_synth_sim
+./post_synth_sim.out
+gtkwave post_synth_sim.vcd
+```
 
-4. **💾 Generate VCD Waveform**
+4️⃣ **Analyze Waveforms**
 
-   * Ensure `$dumpfile` and `$dumpvars` present in `testbench.v`
+* Reset operation ⏱️
+* Clock behavior 🕒
+* Dataflow between modules 🔀
 
-5. **👀 Open Waveforms in GTKWave**
+5️⃣ **Document Observations**
 
-   ```bash
-   gtkwave output/pre_synth_sim/rvmyth.vcd
-   ```
-
-6. **🔄 Observe Signals**
-
-   * ⏱️ Clock and reset operations
-   * 🔀 Dataflow between modules
-   * 📡 Inter-module communication
-
-7. **📝 Document Observations**
-   Capture screenshots and note key behaviors.
+* Take **screenshots**
+* Write **short explanations** per screenshot
 
 </details>
 
 ---
 
-## ⚠️ Common Errors & Fixes 🛠️
+### ⚠️ Common Errors & Fixes
 
 <details>
 <summary>❗ Click to see all errors & solutions</summary>
 
-### 🚫 TL-Verilog Not Found
+**Error:** Module redefinition
 
-```bash
-tlverilog --version
-tlverilog: command not found
-```
+* **Fix:** Include each module only once in compilation
 
-* 🔍 Reason: TL-Verilog not installed (not needed for Week 2)
-* ✅ Fix: Use `iverilog` + `gtkwave`
+**Error:** VCD file missing
 
----
+* **Fix:** Ensure `$dumpfile` and `$dumpvars` are in testbench
 
-### 🚫 GTKWave Not Opening
+**Error:** Wrong include paths
 
-* 🔍 Reason: Tried opening inside Yosys shell
-* ✅ Fix: Exit shell, run:
-
-```bash
-gtkwave rvmyth.vcd
-```
-
----
-
-### 🚫 `.vcd` File Missing
-
-* 🔍 Reason: `$dumpfile` or `$dumpvars` missing in testbench
-* ✅ Fix: Add dump commands, re-run simulation
-
----
-
-### 🚫 Compilation Errors
-
-* 🔍 Reason: Syntax errors or module port mismatch
-* ✅ Fix: Check semicolons, module ports, and signal widths
+* **Fix:** Use correct `-I src/include -I src/module` paths
 
 </details>
 
 ---
 
-## 📊 Workflow Diagram 🔄
+### 📊 Workflow Diagram
 
-```text
+```
 +----------------+       ⚡ compile       +----------------+
 | testbench.v    | --------------------> |  rvmyth.out    |
 | rvmyth.v       |                       | (simulation)   |
@@ -124,7 +186,7 @@ gtkwave rvmyth.vcd
 
 ---
 
-## 📂 Project Structure 🗂️
+### 📂 Project Structure
 
 ```text
 Week2/
@@ -142,41 +204,45 @@ Week2/
 
 ---
 
-## 📸 Simulation Results
+### 📸 Simulation Results
 
-### 1️⃣ Reset & Clock Operation ⏱️
-
+1️⃣ **Reset & Clock Operation ⏱️**
 
 * ✅ Reset asserted at start
-* ✅ Clock drives modules after reset
+* ✅ Clock drives modules correctly
 * ✅ Signals transition as expected
 
----
-
-### 2️⃣ Dataflow Between Modules 🔀
- 
+2️⃣ **Dataflow Between Modules 🔀**
 
 * ✅ Program counter & data signals toggle correctly
 * ✅ Data moves accurately between modules
 * ✅ Confirms functional correctness
 
-* <img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/ad5a34f2-17b9-4876-ac32-6d45899dba9d" />
-<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/53b50085-5e42-4440-bc80-67f73248b9f5" />
----
 
-## 🏆 Outcome 🎉
-
-* 💡 Learned **SoC design fundamentals**
-* 🖥️ Successfully **compiled & simulated** BabySoC modules
-* 📊 Verified **functional behavior** with waveform analysis
-* 📝 Documented **reset, clock, and dataflow** with screenshots
 
 ---
 
-## 📦 Deliverables
+### 🏆 Outcome 🎉
 
-* 📄 `week2_simulation_log.txt` – simulation logs
+* 💡 Learned SoC design fundamentals
+* 🖥️ Compiled & simulated BabySoC modules successfully
+* 📊 Verified functional behavior using waveforms
+* 📝 Documented reset, clock, and dataflow
+
+---
+
+### 📦 Deliverables
+
+* 📄 `week2_simulation_log.txt` → simulation logs
 * 🖼️ Waveform screenshots (reset, clock, dataflow)
-* 📝 Step-wise explanation per screenshot
+* 📝 Short explanation per screenshot
 
 ---
+
+✅ This README combines **theory + functional modelling + simulation documentation** into **one complete Week 2 report**, ready for GitHub submission.
+
+---
+
+If you want, I can **also make a version with collapsible screenshots + fancy emojis per section** to make it look even more **interactive and impressive** for your repo.
+
+Do you want me to do that?

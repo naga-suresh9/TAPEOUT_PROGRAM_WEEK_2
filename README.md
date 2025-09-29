@@ -239,10 +239,3 @@ Week2/
 
 ---
 
-✅ This README combines **theory + functional modelling + simulation documentation** into **one complete Week 2 report**, ready for GitHub submission.
-
----
-
-If you want, I can **also make a version with collapsible screenshots + fancy emojis per section** to make it look even more **interactive and impressive** for your repo.
-
-Do you want me to do that?

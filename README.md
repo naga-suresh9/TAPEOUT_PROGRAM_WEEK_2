@@ -159,7 +159,8 @@ Week2/
 * ✅ Program counter & data signals toggle correctly
 * ✅ Data moves accurately between modules
 * ✅ Confirms functional correctness
-
+* 
+<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/53b50085-5e42-4440-bc80-67f73248b9f5" />
 ---
 
 ## 🏆 Outcome 🎉

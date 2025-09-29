@@ -97,7 +97,8 @@ gtkwave output/pre_synth_sim/rvmyth.vcd
 
 Here’s the captured waveform from **`rvmyth.vcd`**:
 
-![BabySoC Simulation](images/rvmyth_vcd.png)
+![BabySoC Simulation]
+<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/14fce871-1fab-44db-8a5a-9bab80f10660" />
 
 **Observation:**
 
